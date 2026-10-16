@@ -1,25 +1,162 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * Design tokens — UK road signage palette, ported from the phase-1 prototype.
+ * Raw values live in CSS variables (light, then dark); `@theme inline` exposes
+ * them to Tailwind as utilities such as `bg-surface`, `text-ink`, `border-line`.
+ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  color-scheme: light;
+
+  --bar-bg: #0a2a5e;
+  --bar-fg: #ffffff;
+  --bar-muted: rgb(255 255 255 / 0.74);
+  --bar-line: rgb(255 255 255 / 0.15);
+  --bar-active: #f0b429;
+
+  --canvas: #f4f6fb;
+  --surface: #ffffff;
+  --surface-2: #fafbfd;
+  --surface-3: #f1f4fa;
+
+  --ink: #0e1626;
+  --ink-2: #2a3446;
+  --muted: #5a6478;
+  --faint: #8b93a6;
+
+  --line: #e1e6ef;
+  --line-2: #edf0f6;
+
+  --link: #14448f;
+  --link-hover: #1a56b0;
+
+  --btn-bg: #14448f;
+  --btn-bg-hover: #0f3470;
+  --btn-fg: #ffffff;
+
+  --go: #0b6e4f;
+  --go-fill: #e6f4ee;
+  --go-line: #bfe0d2;
+  --hold: #9a5b00;
+  --hold-fill: #fff4e0;
+  --hold-line: #f0dcb4;
+  --stop: #b3261e;
+  --stop-fill: #fcedec;
+  --stop-line: #f3cfcc;
+  --info-fill: #eaf0fa;
+  --info-line: #cbd9ef;
+
+  --elev-sm: 0 1px 2px rgb(14 22 38 / 0.05);
+  --elev-md: 0 1px 3px rgb(14 22 38 / 0.07), 0 10px 24px -10px rgb(14 22 38 / 0.14);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: dark;
+
+    --bar-bg: #0a1526;
+    --bar-fg: #e7ebf2;
+    --bar-muted: rgb(231 235 242 / 0.66);
+    --bar-line: rgb(231 235 242 / 0.12);
+    --bar-active: #e0a94f;
+
+    --canvas: #0c1220;
+    --surface: #141c2b;
+    --surface-2: #182031;
+    --surface-3: #1d2637;
+
+    --ink: #e7ebf2;
+    --ink-2: #c7cedb;
+    --muted: #97a0b2;
+    --faint: #6f7a8d;
+
+    --line: #2a3446;
+    --line-2: #212938;
+
+    --link: #9cbff0;
+    --link-hover: #bbd3f6;
+
+    --btn-bg: #7ba7e6;
+    --btn-bg-hover: #9cbff0;
+    --btn-fg: #0a1526;
+
+    --go: #5fbf95;
+    --go-fill: #12271f;
+    --go-line: #274a3b;
+    --hold: #dfa84f;
+    --hold-fill: #2a2013;
+    --hold-line: #4a3a1e;
+    --stop: #e58b84;
+    --stop-fill: #2a1614;
+    --stop-line: #4d2723;
+    --info-fill: #16243c;
+    --info-line: #26385a;
+
+    --elev-sm: 0 1px 2px rgb(0 0 0 / 0.3);
+    --elev-md: 0 1px 3px rgb(0 0 0 / 0.35), 0 10px 24px -10px rgb(0 0 0 / 0.55);
   }
 }
 
+@theme inline {
+  --font-sans:
+    var(--font-archivo), ui-sans-serif, system-ui, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+  --font-mono:
+    var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-bar: var(--bar-bg);
+  --color-bar-fg: var(--bar-fg);
+  --color-bar-muted: var(--bar-muted);
+  --color-bar-line: var(--bar-line);
+  --color-bar-active: var(--bar-active);
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+
+  --color-btn: var(--btn-bg);
+  --color-btn-hover: var(--btn-bg-hover);
+  --color-btn-fg: var(--btn-fg);
+
+  --color-go: var(--go);
+  --color-go-fill: var(--go-fill);
+  --color-go-line: var(--go-line);
+  --color-hold: var(--hold);
+  --color-hold-fill: var(--hold-fill);
+  --color-hold-line: var(--hold-line);
+  --color-stop: var(--stop);
+  --color-stop-fill: var(--stop-fill);
+  --color-stop-line: var(--stop-line);
+  --color-info-fill: var(--info-fill);
+  --color-info-line: var(--info-line);
+
+  --shadow-sm: var(--elev-sm);
+  --shadow-md: var(--elev-md);
+
+  --radius-field: 7px;
+  --radius-panel: 10px;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+/* WCAG 2.2 AA: a visible focus indicator on every interactive element. */
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
 }

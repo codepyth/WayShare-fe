@@ -38,9 +38,7 @@ if (isIndexable && !env.NEXT_PUBLIC_SITE_URL) {
   );
 }
 
-export const siteUrl = new URL(
-  env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-);
+export const siteUrl = new URL(env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
 
 /** Resolves a site-relative path to an absolute URL string. */
 export function absoluteUrl(path = "/"): string {

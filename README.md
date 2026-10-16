@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WayShare — frontend
 
-## Getting Started
+Next.js frontend for WayShare, UK intercity ride sharing on a cost-sharing basis. Uses the
+Django + DRF backend ([API docs](https://wayshare-be.onrender.com/api/docs/)) over its
+session-cookie API.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router) + React 19, TypeScript (`strict`)
+- Tailwind CSS v4 — design tokens in `app/globals.css`
+- Zod, React Hook Form, TanStack Query, axios (`lib/api.ts` validates every response)
+- Vitest + React Testing Library
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable               | Description                                                    |
+| ---------------------- | -------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_ENV` | `development` · `preview` · `staging` · `production`           |
+| `NEXT_PUBLIC_SITE_URL` | Public base URL; required in production                        |
+| `API_ORIGIN`           | Django origin, server-side only (defaults to the deployed API) |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Auth and the API
 
-## Learn More
+- The browser only calls this app's origin: `next.config.ts` rewrites `/api/*` to
+  `API_ORIGIN/api/*/`. The session cookie stays same-site, with no CORS and no tokens in JS.
+- Call API paths without a trailing slash (`/accounts/login`); the rewrite adds it.
+- `proxy.ts` redirects to `/login` when there is no session cookie, and away from
+  login/register when there is one.
+- Django's `CSRF_TRUSTED_ORIGINS` must include this app's origin, or logout is rejected.
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Script              | Description                                       |
+| ------------------- | ------------------------------------------------- |
+| `npm run dev`       | Dev server                                        |
+| `npm run build`     | Production build                                  |
+| `npm run lint`      | ESLint (type-aware)                               |
+| `npm run typecheck` | `tsc --noEmit`                                    |
+| `npm run format`    | Prettier write                                    |
+| `npm run test`      | Vitest                                            |
+| `npm run api:types` | Regenerate `types/api.ts` from the OpenAPI schema |
+| `npm run icons`     | Regenerate the favicons                           |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project layout
 
-## Deploy on Vercel
+```
+app/                     Routes, layouts, providers; (auth)/ holds /login and /register
+components/ui/atoms/     Primitives: button, text-field, checkbox, labels…
+components/ui/molecules/ Composed: form-field, password-input, notice, panel…
+components/shell/        Top bar
+features/<name>/
+  api/                   API calls (and server actions)
+  hooks/                 TanStack Query mutations and form hooks
+  lib/                   Form schemas, mappers, paths
+  types/                 Zod response schemas, generated request types
+  ui/{atoms,molecules,organisms,templates}/
+hooks/                   Shared hooks (useApiForm, useFieldBinder)
+lib/                     API client, cookies, form-error mapping, SEO
+types/api.ts             Generated from the backend's OpenAPI schema — do not edit
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Conventions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Python owns every business rule. Client validation is feedback only; server errors are
+  mapped onto the form (`lib/form-errors.ts`).
+- Forms use `useApiForm` + `useFieldBinder`, so every field is labelled and accessible.
+- WCAG 2.2 AA from the first component.

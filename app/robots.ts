@@ -9,7 +9,7 @@ import { absoluteUrl, isIndexable } from "@/lib/site-config";
  * if linked elsewhere. Pages that must never appear in results should also
  * use `createPageMetadata({ noIndex: true })`.
  */
-const disallowedPaths: string[] = [];
+const disallowedPaths: string[] = ["/login", "/register"];
 
 export default function robots(): MetadataRoute.Robots {
   if (!isIndexable) {

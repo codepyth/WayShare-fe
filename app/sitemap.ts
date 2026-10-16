@@ -3,8 +3,8 @@ import { absoluteUrl } from "@/lib/site-config";
 
 type SitemapEntry = MetadataRoute.Sitemap[number];
 
-/** Public, indexable static/marketing routes. Add new pages here. */
-const staticPaths: `/${string}`[] = ["/"];
+/** Public, indexable static/marketing routes. Add new pages here (not ones behind login). */
+const staticPaths: `/${string}`[] = [];
 
 /**
  * Dynamic routes (e.g. individual trip listings). Fetch published,
