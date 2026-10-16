@@ -9,7 +9,6 @@ session-cookie API.
 - Next.js 16 (App Router) + React 19, TypeScript (`strict`)
 - Tailwind CSS v4 — design tokens in `app/globals.css`
 - Zod, React Hook Form, TanStack Query, axios (`lib/api.ts` validates every response)
-- Vitest + React Testing Library
 
 ## Getting started
 
@@ -45,7 +44,6 @@ npm run dev
 | `npm run lint`      | ESLint (type-aware)                               |
 | `npm run typecheck` | `tsc --noEmit`                                    |
 | `npm run format`    | Prettier write                                    |
-| `npm run test`      | Vitest                                            |
 | `npm run api:types` | Regenerate `types/api.ts` from the OpenAPI schema |
 | `npm run icons`     | Regenerate the favicons                           |
 

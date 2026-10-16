@@ -20,8 +20,10 @@
 # production
 /build
 
-# local docs (not for the repo)
+# local docs and notes (not for the repo)
 /docs/
+Notes.md
+NOTES.md
 
 # AI assistant files (not for the repo)
 CLAUDE.md
