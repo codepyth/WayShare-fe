@@ -34,6 +34,8 @@ npm run dev
 - `proxy.ts` redirects to `/login` when there is no session cookie, and away from
   login/register when there is one.
 - Django's `CSRF_TRUSTED_ORIGINS` must include this app's origin, or logout is rejected.
+- An expired session (API `403` "not logged in") clears the cookies and returns to login.
+- Requests wait up to 2 minutes, so a Render cold start (about 75 s) does not fail.
 
 ## Scripts
 

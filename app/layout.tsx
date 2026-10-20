@@ -39,14 +39,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to main content
         </a>
-        <TopBar />
-        <main
-          id="main-content"
-          tabIndex={-1}
-          className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain focus:outline-none"
-        >
-          <Providers>{children}</Providers>
-        </main>
+        <Providers>
+          <TopBar />
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain focus:outline-none"
+          >
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );

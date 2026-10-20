@@ -2,7 +2,6 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "@/features/auth/api";
-import { clearSessionCookies } from "@/features/auth/api/clear-session";
 
 export const authKeys = {
   all: ["auth"] as const,
@@ -26,18 +25,5 @@ export function useLoginMutation() {
 }
 
 export function useLogoutMutation() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async () => {
-      try {
-        await authApi.logout();
-      } finally {
-        await clearSessionCookies();
-      }
-    },
-    onSettled: () => {
-      queryClient.clear();
-    },
-  });
+  return useMutation({ mutationFn: authApi.logout });
 }

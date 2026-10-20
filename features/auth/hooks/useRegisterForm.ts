@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useApiForm } from "@/hooks/useApiForm";
 import { useRegisterMutation } from "@/features/auth/hooks/queries";
-import { loginAfterRegister } from "@/features/auth/lib/paths";
+import { loginPath } from "@/features/auth/lib/paths";
 import {
   registerApiFields,
   registerDefaultValues,
@@ -21,7 +21,7 @@ export function useRegisterForm() {
     defaultValues: registerDefaultValues,
     submit: (values) => mutateAsync(toRegisterInput(values)),
     onSuccess: () => {
-      router.push(loginAfterRegister);
+      router.push(loginPath({ reason: "registered" }));
     },
     apiFields: registerApiFields,
   });
