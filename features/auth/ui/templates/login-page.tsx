@@ -1,23 +1,18 @@
-import { Notice } from "@/components/ui/molecules/notice";
-import { authPaths } from "@/features/auth/lib/paths";
+import { authPaths, type LoginReason } from "@/features/auth/lib/paths";
 import { AuthSwitchLink } from "@/features/auth/ui/atoms/auth-switch-link";
 import { AuthCard } from "@/features/auth/ui/molecules/auth-card";
+import { LoginReasonNotice } from "@/features/auth/ui/molecules/login-reason-notice";
 import { LoginForm } from "@/features/auth/ui/organisms/login-form";
 
 export interface LoginPageProps {
-  /** Arrived straight from registration: confirm the account was created. */
-  justRegistered?: boolean;
+  reason?: LoginReason;
   nextPath?: string;
 }
 
-export function LoginPage({ justRegistered = false, nextPath }: LoginPageProps) {
+export function LoginPage({ reason, nextPath }: LoginPageProps) {
   return (
     <>
-      {justRegistered && (
-        <Notice tone="good" role="status" title="Account created." className="mb-5">
-          Log in to continue.
-        </Notice>
-      )}
+      <LoginReasonNotice reason={reason} />
       <AuthCard title="Log in" lede="Welcome back.">
         <LoginForm nextPath={nextPath} />
       </AuthCard>

@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { isIndexable } from "./lib/site-config";
+import { API_TIMEOUT_MS } from "./lib/timeouts";
 
 /** Django API origin, server-side only; the browser calls same-origin `/api`. */
 const apiOrigin = new URL(process.env.API_ORIGIN ?? "https://wayshare-be.onrender.com")
@@ -8,6 +9,11 @@ const apiOrigin = new URL(process.env.API_ORIGIN ?? "https://wayshare-be.onrende
 const nextConfig: NextConfig = {
   // Hide the dev badge; errors still show.
   devIndicators: false,
+
+  experimental: {
+    // The `/api` rewrite gives up after 30 s by default; a cold start takes longer.
+    proxyTimeout: API_TIMEOUT_MS,
+  },
 
   images: {
     // AVIF first (smaller), WebP fallback.

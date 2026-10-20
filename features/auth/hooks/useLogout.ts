@@ -1,19 +1,17 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useLogoutMutation } from "@/features/auth/hooks/queries";
-import { authPaths } from "@/features/auth/lib/paths";
+import { useEndSession } from "@/features/auth/hooks/useEndSession";
 
-/** Logs out, then goes to login whether or not the API call succeeded. */
+/** Logs out, then ends the session locally whether or not the API call succeeded. */
 export function useLogout() {
-  const router = useRouter();
+  const endSession = useEndSession();
   const { mutate, isPending } = useLogoutMutation();
 
   const logout = () => {
     mutate(undefined, {
       onSettled: () => {
-        router.replace(authPaths.login);
-        router.refresh();
+        void endSession();
       },
     });
   };

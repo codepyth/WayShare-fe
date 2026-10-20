@@ -1,6 +1,7 @@
 import axios, { AxiosError, type AxiosRequestConfig } from "axios";
 import type { ZodType } from "zod";
 import { CSRF_COOKIE } from "@/lib/cookies";
+import { API_TIMEOUT_MS } from "@/lib/timeouts";
 
 /** API failure: HTTP status plus the parsed error body. */
 export class ApiError extends Error {
@@ -15,9 +16,28 @@ export class ApiError extends Error {
   }
 }
 
+// DRF's NotAuthenticated message; session auth answers 403 with it, not 401.
+const NOT_AUTHENTICATED = "Authentication credentials were not provided.";
+
+/** True when the API says the session is missing or expired. */
+export function isUnauthenticated(error: unknown): boolean {
+  if (!(error instanceof ApiError)) return false;
+  if (error.status === 401) return true;
+  const detail = (error.details as { detail?: unknown } | undefined)?.detail;
+  return error.status === 403 && detail === NOT_AUTHENTICATED;
+}
+
+let unauthenticatedHandler: (() => void) | undefined;
+
+/** Called when a request finds the session gone; auth endpoints are excluded. */
+export function setUnauthenticatedHandler(handler: (() => void) | undefined) {
+  unauthenticatedHandler = handler;
+}
+
 /** Same-origin; `next.config.ts` rewrites `/api/*` to Django. */
 export const httpClient = axios.create({
   baseURL: "/api",
+  timeout: API_TIMEOUT_MS,
   headers: { "Content-Type": "application/json" },
   xsrfCookieName: CSRF_COOKIE,
   xsrfHeaderName: "X-CSRFToken",
@@ -26,8 +46,14 @@ export const httpClient = axios.create({
 httpClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    const status = error.response?.status ?? 0;
-    return Promise.reject(new ApiError(error.message, status, error.response?.data));
+    const apiError = new ApiError(
+      error.message,
+      error.response?.status ?? 0,
+      error.response?.data,
+    );
+    const isAuthEndpoint = error.config?.url?.startsWith("/accounts/") ?? false;
+    if (!isAuthEndpoint && isUnauthenticated(apiError)) unauthenticatedHandler?.();
+    return Promise.reject(apiError);
   },
 );
 

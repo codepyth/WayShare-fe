@@ -9,7 +9,6 @@ session-cookie API.
 - Next.js 16 (App Router) + React 19, TypeScript (`strict`)
 - Tailwind CSS v4 — design tokens in `app/globals.css`
 - Zod, React Hook Form, TanStack Query, axios (`lib/api.ts` validates every response)
-- Vitest + React Testing Library
 
 ## Getting started
 
@@ -35,6 +34,8 @@ npm run dev
 - `proxy.ts` redirects to `/login` when there is no session cookie, and away from
   login/register when there is one.
 - Django's `CSRF_TRUSTED_ORIGINS` must include this app's origin, or logout is rejected.
+- An expired session (API `403` "not logged in") clears the cookies and returns to login.
+- Requests wait up to 2 minutes, so a Render cold start (about 75 s) does not fail.
 
 ## Scripts
 
@@ -45,7 +46,6 @@ npm run dev
 | `npm run lint`      | ESLint (type-aware)                               |
 | `npm run typecheck` | `tsc --noEmit`                                    |
 | `npm run format`    | Prettier write                                    |
-| `npm run test`      | Vitest                                            |
 | `npm run api:types` | Regenerate `types/api.ts` from the OpenAPI schema |
 | `npm run icons`     | Regenerate the favicons                           |
 

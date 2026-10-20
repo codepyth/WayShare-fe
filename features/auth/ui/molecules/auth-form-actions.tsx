@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/atoms/button";
 import { FormError } from "@/components/ui/molecules/form-error";
+import { SlowRequestNotice } from "@/components/ui/molecules/slow-request-notice";
 
 export interface AuthFormActionsProps {
   label: string;
@@ -7,7 +8,7 @@ export interface AuthFormActionsProps {
   formError?: string;
 }
 
-/** The form-level error, then the full-width submit button. */
+/** Form-level error, a notice if the request runs long, then the submit button. */
 export function AuthFormActions({
   label,
   isSubmitting,
@@ -16,6 +17,7 @@ export function AuthFormActions({
   return (
     <>
       <FormError message={formError} />
+      <SlowRequestNotice isPending={isSubmitting} />
       <Button type="submit" fullWidth isLoading={isSubmitting}>
         {label}
       </Button>

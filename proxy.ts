@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE } from "@/lib/cookies";
-import { authPaths } from "@/features/auth/lib/paths";
-import { isGuestOnlyPath, loginRedirectPath } from "@/features/auth/lib/session";
+import { authPaths, loginPath } from "@/features/auth/lib/paths";
+import { isGuestOnlyPath } from "@/features/auth/lib/session";
 
 /**
  * Route guard. Optimistic: checks the session cookie exists; Django still
@@ -14,7 +14,7 @@ export function proxy(request: NextRequest) {
 
   if (!hasSession && !guestOnly) {
     return NextResponse.redirect(
-      new URL(loginRedirectPath(pathname, search), request.url),
+      new URL(loginPath({ requested: `${pathname}${search}` }), request.url),
     );
   }
   if (hasSession && guestOnly) {

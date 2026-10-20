@@ -1,5 +1,5 @@
 import { createPageMetadata } from "@/lib/seo";
-import { REGISTERED_PARAM } from "@/features/auth/lib/paths";
+import { isLoginReason } from "@/features/auth/lib/paths";
 import { LoginPage } from "@/features/auth/ui/templates/login-page";
 
 export const metadata = createPageMetadata({
@@ -13,10 +13,11 @@ const first = (value: string | string[] | undefined) =>
 
 export default async function Page({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
+  const reason = first(params.reason);
 
   return (
     <LoginPage
-      justRegistered={first(params[REGISTERED_PARAM]) === "1"}
+      reason={isLoginReason(reason) ? reason : undefined}
       nextPath={first(params.next)}
     />
   );
