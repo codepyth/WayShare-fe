@@ -5,7 +5,7 @@ import type { LoginInput } from "@/features/auth/types";
 
 export const loginFormSchema = z.object({
   email: emailField,
-  password: currentPasswordField,
+  password: currentPasswordField(),
 });
 
 export type LoginFormValues = z.infer<typeof loginFormSchema>;

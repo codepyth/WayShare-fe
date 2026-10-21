@@ -27,9 +27,16 @@ export function isUnauthenticated(error: unknown): boolean {
   return error.status === 403 && detail === NOT_AUTHENTICATED;
 }
 
+declare module "axios" {
+  interface AxiosRequestConfig {
+    /** The caller handles a 401/403 itself (login, register, logout). */
+    skipSessionRedirect?: boolean;
+  }
+}
+
 let unauthenticatedHandler: (() => void) | undefined;
 
-/** Called when a request finds the session gone; auth endpoints are excluded. */
+/** Called when a request finds the session gone, unless it set `skipSessionRedirect`. */
 export function setUnauthenticatedHandler(handler: (() => void) | undefined) {
   unauthenticatedHandler = handler;
 }
@@ -51,8 +58,9 @@ httpClient.interceptors.response.use(
       error.response?.status ?? 0,
       error.response?.data,
     );
-    const isAuthEndpoint = error.config?.url?.startsWith("/accounts/") ?? false;
-    if (!isAuthEndpoint && isUnauthenticated(apiError)) unauthenticatedHandler?.();
+    if (!error.config?.skipSessionRedirect && isUnauthenticated(apiError)) {
+      unauthenticatedHandler?.();
+    }
     return Promise.reject(apiError);
   },
 );
