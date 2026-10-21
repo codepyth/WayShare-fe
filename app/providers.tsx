@@ -2,6 +2,8 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
+import { ModalManager } from "@/components/ui/molecules/modal/modal-manager";
+import { ModalProvider } from "@/contexts/modal-context";
 import { ApiError } from "@/lib/api";
 import { SessionExpiryWatcher } from "@/features/auth/ui/atoms/session-expiry-watcher";
 
@@ -26,8 +28,11 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SessionExpiryWatcher />
-      {children}
+      <ModalProvider>
+        <SessionExpiryWatcher />
+        {children}
+        <ModalManager />
+      </ModalProvider>
     </QueryClientProvider>
   );
 }

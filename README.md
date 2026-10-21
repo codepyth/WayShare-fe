@@ -72,4 +72,6 @@ types/api.ts             Generated from the backend's OpenAPI schema — do not 
 - Python owns every business rule. Client validation is feedback only; server errors are
   mapped onto the form (`lib/form-errors.ts`).
 - Forms use `useApiForm` + `useFieldBinder`, so every field is labelled and accessible.
+- Each feature lists its endpoints in `api/endpoints.ts` with `endpoint("/api/…/")`, which
+  only accepts paths in `types/api.ts` — a removed or mistyped endpoint fails the build.
 - WCAG 2.2 AA from the first component.

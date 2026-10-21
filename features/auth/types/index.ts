@@ -1,10 +1,11 @@
 export {
   loginResponseSchema,
-  logoutResponseSchema,
+  messageSchema,
   registeredUserSchema,
   userSchema,
 } from "./auth.types";
 export type {
+  ChangePasswordInput,
   LoginInput,
   LoginResponse,
   RegisteredUser,

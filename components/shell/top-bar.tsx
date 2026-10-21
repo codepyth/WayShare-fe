@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { Wordmark } from "@/components/ui/atoms/wordmark";
 import { SESSION_COOKIE } from "@/lib/cookies";
-import { LogoutButton } from "@/features/auth/ui/atoms/logout-button";
+import { AccountNav } from "@/components/shell/account-nav";
 
 export async function TopBar() {
   const isSignedIn = (await cookies()).has(SESSION_COOKIE);
@@ -20,7 +20,7 @@ export async function TopBar() {
         >
           <Wordmark />
         </Link>
-        {isSignedIn && <LogoutButton />}
+        {isSignedIn && <AccountNav />}
       </nav>
     </header>
   );

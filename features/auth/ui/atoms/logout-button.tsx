@@ -1,9 +1,10 @@
 "use client";
 
+import { cn } from "@/lib/cn";
 import { useLogout } from "@/features/auth/hooks/useLogout";
 
-/** "Log out" link-style button for the top bar. */
-export function LogoutButton() {
+/** "Log out" as a link-style button; the caller sets its look. */
+export function LogoutButton({ className }: { className?: string }) {
   const { logout, isPending } = useLogout();
 
   return (
@@ -12,7 +13,10 @@ export function LogoutButton() {
       onClick={logout}
       disabled={isPending}
       aria-busy={isPending || undefined}
-      className="cursor-pointer text-sm font-medium text-bar-fg underline-offset-2 hover:underline focus-visible:outline-bar-fg disabled:cursor-wait disabled:opacity-60"
+      className={cn(
+        "cursor-pointer disabled:cursor-wait disabled:opacity-60",
+        className,
+      )}
     >
       Log out
     </button>
