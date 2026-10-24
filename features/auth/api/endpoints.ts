@@ -7,4 +7,6 @@ export const AUTH_ENDPOINTS = {
   logout: endpoint("/api/accounts/logout/"),
   me: endpoint("/api/accounts/me/"),
   changePassword: endpoint("/api/accounts/change-password/"),
+  passwordReset: endpoint("/api/accounts/password-reset/"),
+  passwordResetConfirm: endpoint("/api/accounts/password-reset/confirm/"),
 } as const;

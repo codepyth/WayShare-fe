@@ -8,6 +8,8 @@ export type {
   ChangePasswordInput,
   LoginInput,
   LoginResponse,
+  PasswordResetConfirmInput,
+  PasswordResetInput,
   RegisteredUser,
   RegisterInput,
   User,

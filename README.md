@@ -52,7 +52,7 @@ npm run dev
 ## Project layout
 
 ```
-app/                     Routes, layouts, providers; (auth)/ holds /login and /register
+app/                     Routes, layouts, providers; (auth)/ holds /login, /register and password reset
 components/ui/atoms/     Primitives: button, text-field, checkbox, labels…
 components/ui/molecules/ Composed: form-field, password-input, notice, panel…
 components/shell/        Top bar

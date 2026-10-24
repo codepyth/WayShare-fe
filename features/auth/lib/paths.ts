@@ -1,12 +1,16 @@
 export const authPaths = {
   login: "/login",
   register: "/register",
+  /** Asks for a reset link by email. */
+  forgotPassword: "/forgot-password",
+  /** The emailed link: `/reset-password?uid=…&token=…`. */
+  resetPassword: "/reset-password",
   /** Where a successful login lands when no safe `next` is given. */
   home: "/",
 } as const;
 
 /** Why login was opened; the login page shows a matching notice. */
-export const LOGIN_REASONS = ["registered", "expired"] as const;
+export const LOGIN_REASONS = ["registered", "expired", "password-reset"] as const;
 export type LoginReason = (typeof LOGIN_REASONS)[number];
 
 export const isLoginReason = (value: unknown): value is LoginReason =>

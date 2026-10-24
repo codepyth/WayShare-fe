@@ -39,3 +39,11 @@ export function useLogoutMutation() {
 export function useChangePasswordMutation() {
   return useMutation({ mutationFn: authApi.changePassword });
 }
+
+export function usePasswordResetMutation() {
+  return useMutation({ mutationFn: authApi.passwordReset });
+}
+
+export function usePasswordResetConfirmMutation() {
+  return useMutation({ mutationFn: authApi.passwordResetConfirm });
+}

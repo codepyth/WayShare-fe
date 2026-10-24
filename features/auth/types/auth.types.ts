@@ -7,6 +7,8 @@ type Schemas = components["schemas"];
 export type RegisterInput = Omit<Schemas["Register"], "id">;
 export type LoginInput = Schemas["UserLogin"];
 export type ChangePasswordInput = Schemas["ChangePassword"];
+export type PasswordResetInput = Schemas["PasswordReset"];
+export type PasswordResetConfirmInput = Schemas["PasswordResetConfirm"];
 
 // Responses are checked at runtime; `satisfies` keeps each in step with the contract.
 const timestamp = z.string().nullable();
