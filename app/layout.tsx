@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import { TopBar } from "@/components/shell/top-bar";
 import { createRootMetadata } from "@/lib/seo";
 import { siteConfig } from "@/lib/site-config";
+import { Providers } from "./providers";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
   subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
-  // Secondary font: don't compete with the primary font for preload bandwidth.
+  // Secondary font (plates, figures): don't compete with the primary for preload.
   preload: false,
 });
 
@@ -27,26 +29,26 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang={siteConfig.lang}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${archivo.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">
+      {/* Fixed top bar; only <main> scrolls. */}
+      <body className="flex h-dvh flex-col overflow-hidden font-sans text-[15px] leading-[1.55]">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:outline-2"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-surface focus:px-4 focus:py-2 focus:text-ink"
         >
           Skip to main content
         </a>
-        <header>
-          <nav aria-label="Main">
-            <Link href="/">{siteConfig.name}</Link>
-          </nav>
-        </header>
-        <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col">
-          {children}
-        </main>
-        <footer>
-          <p>{siteConfig.name}</p>
-        </footer>
+        <Providers>
+          <TopBar />
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain focus:outline-none"
+          >
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
