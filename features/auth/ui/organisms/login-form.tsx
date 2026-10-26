@@ -1,8 +1,11 @@
 "use client";
 
+import { Form } from "@/components/ui/atoms/form";
+import { TextLink } from "@/components/ui/atoms/text-link";
+import { FormActions } from "@/components/ui/molecules/form-actions";
 import { useFieldBinder } from "@/hooks/useFieldBinder";
 import { useLoginForm } from "@/features/auth/hooks/useLoginForm";
-import { AuthFormActions } from "@/features/auth/ui/molecules/auth-form-actions";
+import { authPaths } from "@/features/auth/lib/paths";
 import { EmailField } from "@/features/auth/ui/molecules/email-field";
 import { PasswordField } from "@/features/auth/ui/molecules/password-field";
 
@@ -16,7 +19,7 @@ export function LoginForm({ nextPath }: LoginFormProps) {
   const bind = useFieldBinder(form);
 
   return (
-    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-[17px]">
+    <Form onSubmit={onSubmit}>
       <EmailField field={bind.field("email")} input={bind.input("email")} />
 
       <PasswordField
@@ -25,11 +28,11 @@ export function LoginForm({ nextPath }: LoginFormProps) {
         autoComplete="current-password"
       />
 
-      <AuthFormActions
-        label="Log in"
-        isSubmitting={isSubmitting}
-        formError={formError}
-      />
-    </form>
+      <TextLink href={authPaths.forgotPassword} className="self-start text-sm">
+        Forgot your password?
+      </TextLink>
+
+      <FormActions label="Log in" isSubmitting={isSubmitting} formError={formError} />
+    </Form>
   );
 }

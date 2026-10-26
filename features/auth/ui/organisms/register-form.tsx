@@ -1,12 +1,13 @@
 "use client";
 
+import { Form } from "@/components/ui/atoms/form";
 import { TextField } from "@/components/ui/atoms/text-field";
 import { CheckboxField } from "@/components/ui/molecules/checkbox-field";
+import { FormActions } from "@/components/ui/molecules/form-actions";
 import { FormField } from "@/components/ui/molecules/form-field";
 import { useFieldBinder } from "@/hooks/useFieldBinder";
 import { useRegisterForm } from "@/features/auth/hooks/useRegisterForm";
-import { PASSWORD_MIN } from "@/features/auth/lib/validation";
-import { AuthFormActions } from "@/features/auth/ui/molecules/auth-form-actions";
+import { NEW_PASSWORD_HINT } from "@/features/auth/lib/validation";
 import { EmailField } from "@/features/auth/ui/molecules/email-field";
 import { PasswordField } from "@/features/auth/ui/molecules/password-field";
 
@@ -15,7 +16,7 @@ export function RegisterForm() {
   const bind = useFieldBinder(form);
 
   return (
-    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-[17px]">
+    <Form onSubmit={onSubmit}>
       <FormField label="Full name" {...bind.field("name")}>
         <TextField {...bind.input("name")} autoComplete="name" />
       </FormField>
@@ -26,7 +27,7 @@ export function RegisterForm() {
         field={bind.field("password")}
         input={bind.input("password", { hasHint: true })}
         autoComplete="new-password"
-        hint={`At least ${String(PASSWORD_MIN)} characters, not only numbers.`}
+        hint={NEW_PASSWORD_HINT}
       />
 
       <CheckboxField
@@ -36,11 +37,11 @@ export function RegisterForm() {
         error={bind.errorOf("isAdultConfirmed")}
       />
 
-      <AuthFormActions
+      <FormActions
         label="Create account"
         isSubmitting={isSubmitting}
         formError={formError}
       />
-    </form>
+    </Form>
   );
 }

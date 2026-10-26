@@ -13,6 +13,11 @@ const NOTICES: Record<LoginReason, { tone: NoticeTone; title: string; body: stri
       title: "Your session has ended.",
       body: "Log in again to continue.",
     },
+    "password-reset": {
+      tone: "good",
+      title: "Password reset.",
+      body: "Log in with your new password.",
+    },
   };
 
 /** Explains why the login page was opened. */

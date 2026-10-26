@@ -10,7 +10,7 @@ export const registerFormSchema = z.object({
     .min(1, "Enter your full name")
     .max(NAME_MAX, `Name must be ${String(NAME_MAX)} characters or fewer`),
   email: emailField,
-  password: newPasswordField,
+  password: newPasswordField(),
   isAdultConfirmed: z
     .boolean()
     .refine(Boolean, "Confirm you are 18 or over to create an account"),

@@ -52,7 +52,7 @@ npm run dev
 ## Project layout
 
 ```
-app/                     Routes, layouts, providers; (auth)/ holds /login and /register
+app/                     Routes, layouts, providers; (auth)/ holds /login, /register and password reset
 components/ui/atoms/     Primitives: button, text-field, checkbox, labels…
 components/ui/molecules/ Composed: form-field, password-input, notice, panel…
 components/shell/        Top bar
@@ -72,4 +72,6 @@ types/api.ts             Generated from the backend's OpenAPI schema — do not 
 - Python owns every business rule. Client validation is feedback only; server errors are
   mapped onto the form (`lib/form-errors.ts`).
 - Forms use `useApiForm` + `useFieldBinder`, so every field is labelled and accessible.
+- Each feature lists its endpoints in `api/endpoints.ts` with `endpoint("/api/…/")`, which
+  only accepts paths in `types/api.ts` — a removed or mistyped endpoint fails the build.
 - WCAG 2.2 AA from the first component.

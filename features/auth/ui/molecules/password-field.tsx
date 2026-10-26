@@ -7,6 +7,7 @@ export interface PasswordFieldProps {
   input: InputBinding;
   /** `new-password` lets password managers offer a strong one. */
   autoComplete: "current-password" | "new-password";
+  label?: string;
   hint?: string;
 }
 
@@ -14,10 +15,11 @@ export function PasswordField({
   field,
   input,
   autoComplete,
+  label = "Password",
   hint,
 }: PasswordFieldProps) {
   return (
-    <FormField label="Password" hint={hint} {...field}>
+    <FormField label={label} hint={hint} {...field}>
       <PasswordInput {...input} autoComplete={autoComplete} />
     </FormField>
   );
